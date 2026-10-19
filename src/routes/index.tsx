@@ -654,7 +654,13 @@ export function Index({ skipVslDelay = false }: Readonly<{ skipVslDelay?: boolea
     };
   }, [screen.kind]);
 
+  // Só rastreia quando a tela muda de fato (salvar uma resposta não pode disparar o evento de novo)
+  const lastTrackedScreenRef = useRef<string | null>(null);
   useEffect(() => {
+    const screenKey = screenToSlug(screen);
+    if (lastTrackedScreenRef.current === screenKey) return;
+    lastTrackedScreenRef.current = screenKey;
+
     window.scrollTo({ top: 0, behavior: "smooth" });
 
     if (screen.kind === "question") {
@@ -675,12 +681,7 @@ export function Index({ skipVslDelay = false }: Readonly<{ skipVslDelay?: boolea
         user_weight: biometrics.weight,
         user_height: biometrics.height,
       });
-      trackPlanPageView({
-        goal,
-        obstacle,
-        age,
-        time,
-      });
+      // trackPlanPageView é disparado pelo próprio FinalScreen
     } else if (screen.kind === "diagnostic") {
       const imc = Number((biometrics.weight / Math.pow(biometrics.height / 100, 2)).toFixed(1));
       trackDiagnosticView({
@@ -3250,9 +3251,10 @@ function VslQuizOfferCard({ onCtaClick }: Readonly<{ onCtaClick: (location: stri
 function VslQuizIncludedSummary() {
   const items = [
     { name: "Programa Completo Desafío Glúteos Brasileños 28 Días", value: "$97.00 USD" },
-    { name: "Módulo 1: Despertar Neuromuscular y Activación Inicial", value: "$27.00 USD" },
-    { name: "Módulo 2: Sobrecarga Progresiva y Volumen Lateral", value: "$37.00 USD" },
-    { name: "Módulo 3: Escultura, Elevación y Firmeza Máxima", value: "$37.00 USD" },
+    // Os módulos fazem parte do programa de $97: total = $97 + $132 em bônus = $229
+    { name: "Módulo 1: Despertar Neuromuscular y Activación Inicial", included: true },
+    { name: "Módulo 2: Sobrecarga Progresiva y Volumen Lateral", included: true },
+    { name: "Módulo 3: Escultura, Elevación y Firmeza Máxima", included: true },
     {
       name: "Bono #1: Guía Nutricional Anti-Flacidez y Menú Glúteos Firmes",
       value: "$37.00 USD",
@@ -3273,7 +3275,7 @@ function VslQuizIncludedSummary() {
       value: "$47.00 USD",
       free: true,
     },
-    { name: "Garantía Incondicional de Reembolso Total en 7 Días", value: "INVALUABLE" },
+    { name: "Garantía Incondicional de Reembolso Total en 7 Días", value: "INVALUABLE", plain: true },
   ];
 
   return (
@@ -3296,9 +3298,9 @@ function VslQuizIncludedSummary() {
               {item.name}
             </span>
             <span
-              className={`shrink-0 font-extrabold ${item.free ? "text-[color:var(--coral)]" : "text-[color:var(--ink-muted)] line-through"}`}
+              className={`shrink-0 font-extrabold ${item.free ? "text-[color:var(--coral)]" : item.included || item.plain ? "text-emerald-700" : "text-[color:var(--ink-muted)] line-through"}`}
             >
-              {item.free ? "GRATIS HOY" : item.value}
+              {item.free ? "GRATIS HOY" : item.included ? "INCLUIDO" : item.value}
             </span>
           </div>
         ))}

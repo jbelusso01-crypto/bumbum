@@ -231,15 +231,17 @@ export function trackQuizComplete(profileSummary: Record<string, unknown> = {}) 
 }
 
 /**
- * Track InitiateCheckout when CTA button is clicked
+ * Track click on a checkout CTA (custom event).
+ * O InitiateCheckout oficial é disparado pelo próprio checkout do centerpag (Pixel da afiliação),
+ * então o site não o dispara para não contar duas vezes.
  */
-export function trackInitiateCheckout(
+export function trackCheckoutClick(
   clickLocation = "final_cta",
   productValue = 9.90,
   couponCode = "BUMBUM90",
   extra: Record<string, unknown> = {},
 ) {
-  fbq("track", "InitiateCheckout", {
+  fbq("trackCustom", "CheckoutClick", {
     content_name: "BrazilianBooty - Desafío 28 Días",
     content_category: "Programa Digital",
     content_ids: ["BRAZILIANBOOTY28"],
@@ -346,7 +348,7 @@ export function trackVslSpeedChange(speed: number) {
  * Track CTA click on the VSL page
  */
 export function trackVslCtaClick(location = "vsl_primary_cta") {
-  trackInitiateCheckout(location, 9.90, "BUMBUM90");
+  trackCheckoutClick(location, 9.90, "BUMBUM90");
   fbq("trackCustom", "VslCtaClick", {
     click_location: location,
     product: "BrazilianBooty - Desafío 28 Días",
@@ -374,7 +376,7 @@ export function trackBackredirectView() {
  * Track CTA click on Backredirect page ($9.90 USD offer)
  */
 export function trackBackredirectCtaClick(location = "backredirect_primary_cta") {
-  trackInitiateCheckout(location, 9.90, "BUMBUM90", { page: "backredirect" });
+  trackCheckoutClick(location, 9.90, "BUMBUM90", { page: "backredirect" });
   fbq("trackCustom", "BackredirectCtaClick", {
     click_location: location,
     product: "BrazilianBooty - Desafío 28 Días",
@@ -399,7 +401,7 @@ export function trackDownsellModalView() {
  * Track CTA click on Downsell offer ($9.90 USD)
  */
 export function trackDownsellCtaClick(location = "downsell_modal_cta") {
-  trackInitiateCheckout(location, 9.90, "BUMBUM90", { page: "downsell_modal" });
+  trackCheckoutClick(location, 9.90, "BUMBUM90", { page: "downsell_modal" });
 
   fbq("trackCustom", "DownsellCtaClick", {
     click_location: location,
@@ -502,7 +504,7 @@ export function trackPlanCheckoutClick(
   price: number,
   location = "sales_page_plan_cta"
 ) {
-  trackInitiateCheckout(
+  trackCheckoutClick(
     location,
     price,
     planType === "vip" ? "VIP90" : "BUMBUM90",
