@@ -1,5 +1,5 @@
 export const META_PIXEL_ID = "2518707061992349"; // Insira o ID do Meta Pixel (ex: 1234567890)
-export const BASE_CHECKOUT_URL = "https://go.centerpag.com/PPU38CQH4OI"; // Insira o link do checkout principal
+export const BASE_CHECKOUT_URL = "https://go.centerpag.com/PPU38CQH4QJ"; // Insira o link do checkout principal
 export const BASE_CHECKOUT_BASIC_URL = ""; // Insira o link do checkout do plano básico
 export const BASE_CHECKOUT_VIP_URL = ""; // Insira o link do checkout do plano VIP
 export const BASE_BACKREDIRECT_URL = BASE_CHECKOUT_URL; // Backredirect usa a mesma oferta de $9.90 USD do checkout principal
