@@ -560,7 +560,7 @@ function getFallbackPreviousScreen(screen: Screen): Screen | null {
   }
 }
 
-export function Index() {
+export function Index({ skipVslDelay = false }: Readonly<{ skipVslDelay?: boolean }> = {}) {
   const searchParams = (useSearch({ strict: false }) as Record<string, string | undefined>) || {};
   const slugFromUrl = searchParams.etapa || searchParams.step || searchParams.slug;
 
@@ -820,6 +820,7 @@ export function Index() {
             biometrics={biometrics}
             onBack={back}
             onProceedToOffer={() => go({ kind: "final" })}
+            skipDelay={skipVslDelay}
           />
         )}
         {screen.kind === "final" && (
@@ -2444,16 +2445,19 @@ function VslDedicatedScreen({
   biometrics,
   onBack,
   onProceedToOffer,
+  skipDelay = false,
 }: Readonly<{
   answers: Record<number, number>;
   biometrics: Biometrics;
   onBack: () => void;
   onProceedToOffer: () => void;
+  skipDelay?: boolean;
 }>) {
   const goal = profileData.goals[answers[11] ?? 0];
   const time = profileData.times[answers[6] ?? 0];
 
-  const [hasUnlockedPitch, setHasUnlockedPitch] = useState(false);
+  // skipDelay (rota /preview): botão de compra liberado na hora, sem esperar o pitch do vídeo
+  const [hasUnlockedPitch, setHasUnlockedPitch] = useState(skipDelay);
 
   const handlePitchReached = () => {
     if (!hasUnlockedPitch) {

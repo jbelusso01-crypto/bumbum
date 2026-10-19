@@ -1,17 +1,20 @@
-export const META_PIXEL_ID = "1616352426890638"; // Insira o ID do Meta Pixel (ex: 1234567890)
+export const META_PIXEL_ID = "2518707061992349"; // Insira o ID do Meta Pixel (ex: 1234567890)
 export const BASE_CHECKOUT_URL = "https://go.centerpag.com/PPU38CQH4OI"; // Insira o link do checkout principal
 export const BASE_CHECKOUT_BASIC_URL = ""; // Insira o link do checkout do plano básico
 export const BASE_CHECKOUT_VIP_URL = ""; // Insira o link do checkout do plano VIP
-export const BASE_BACKREDIRECT_URL = ""; // Insira o link do checkout da oferta de backredirect / saída
+export const BASE_BACKREDIRECT_URL = BASE_CHECKOUT_URL; // Backredirect usa a mesma oferta de $9.90 USD do checkout principal
+
+/** Rotas onde o Pixel NUNCA dispara: App entregável e o preview interno do funil */
+export const PIXEL_BLOCKED_PREFIXES = ["/app-coachluca", "/app", "/preview"];
 
 /**
- * Retorna true se a rota atual for do App entregável (/app-coachluca ou /app),
- * garantindo que o Pixel NUNCA seja metrificado nessa página.
+ * Retorna true se a rota atual for do App entregável (/app-coachluca ou /app) ou do /preview,
+ * garantindo que o Pixel NUNCA seja metrificado nessas páginas.
  */
 export function isAppRoute(): boolean {
   if (typeof window === "undefined") return false;
   const path = window.location.pathname.toLowerCase();
-  return path.startsWith("/app-coachluca") || path.startsWith("/app");
+  return PIXEL_BLOCKED_PREFIXES.some((prefix) => path.startsWith(prefix));
 }
 
 type MetaPixelFn = {
@@ -105,8 +108,8 @@ export function trackViewContent(screenName: string, extraParams: Record<string,
     content_name: screenName,
     content_category: "Quiz Funnel 28 Dias",
     content_type: "quiz_step",
-    value: 9.99,
-    currency: "EUR",
+    value: 9.90,
+    currency: "USD",
     ...extraParams,
   });
 }
@@ -221,8 +224,8 @@ export function trackQuizComplete(profileSummary: Record<string, unknown> = {}) 
   fbq("track", "Lead", {
     content_name: "BrazilianBooty - Quiz Completado",
     content_category: "Quiz Lead",
-    value: 9.99,
-    currency: "EUR",
+    value: 9.90,
+    currency: "USD",
     ...profileSummary,
   });
 }
@@ -232,7 +235,7 @@ export function trackQuizComplete(profileSummary: Record<string, unknown> = {}) 
  */
 export function trackInitiateCheckout(
   clickLocation = "final_cta",
-  productValue = 9.99,
+  productValue = 9.90,
   couponCode = "BUMBUM90",
   extra: Record<string, unknown> = {},
 ) {
@@ -242,7 +245,7 @@ export function trackInitiateCheckout(
     content_ids: ["BRAZILIANBOOTY28"],
     content_type: "product",
     value: productValue,
-    currency: "EUR",
+    currency: "USD",
     num_items: 1,
     coupon: couponCode,
     click_location: clickLocation,
@@ -343,12 +346,12 @@ export function trackVslSpeedChange(speed: number) {
  * Track CTA click on the VSL page
  */
 export function trackVslCtaClick(location = "vsl_primary_cta") {
-  trackInitiateCheckout(location, 9.99, "BUMBUM90");
+  trackInitiateCheckout(location, 9.90, "BUMBUM90");
   fbq("trackCustom", "VslCtaClick", {
     click_location: location,
     product: "BrazilianBooty - Desafío 28 Días",
-    value: 9.99,
-    currency: "EUR",
+    value: 9.90,
+    currency: "USD",
   });
 }
 
@@ -359,8 +362,8 @@ export function trackBackredirectView() {
   trackPageView("Backredirect - BrazilianBooty 28 Días");
   trackViewContent("Backredirect BrazilianBooty", {
     page_type: "backredirect",
-    value: 5.99,
-    currency: "EUR",
+    value: 9.90,
+    currency: "USD",
   });
   fbq("trackCustom", "BackredirectView", {
     timestamp: new Date().toISOString(),
@@ -368,41 +371,41 @@ export function trackBackredirectView() {
 }
 
 /**
- * Track CTA click on Backredirect page (5,99 € offer)
+ * Track CTA click on Backredirect page ($9.90 USD offer)
  */
 export function trackBackredirectCtaClick(location = "backredirect_primary_cta") {
-  trackInitiateCheckout(location, 5.99, "BUMBUM590", { page: "backredirect" });
+  trackInitiateCheckout(location, 9.90, "BUMBUM90", { page: "backredirect" });
   fbq("trackCustom", "BackredirectCtaClick", {
     click_location: location,
     product: "BrazilianBooty - Desafío 28 Días",
-    value: 5.99,
-    currency: "EUR",
+    value: 9.90,
+    currency: "USD",
   });
 }
 
 /**
- * Track when Downsell modal ($5.90 offer) is triggered/viewed
+ * Track when Downsell modal ($9.90 USD offer) is triggered/viewed
  */
 export function trackDownsellModalView() {
   fbq("trackCustom", "DownsellModalView", {
     offer: "BrazilianBooty Plan 28 Días Downsell",
-    price: 5.99,
-    currency: "EUR",
+    price: 9.90,
+    currency: "USD",
     timestamp: new Date().toISOString(),
   });
 }
 
 /**
- * Track CTA click on Downsell offer (5,99 €)
+ * Track CTA click on Downsell offer ($9.90 USD)
  */
 export function trackDownsellCtaClick(location = "downsell_modal_cta") {
-  trackInitiateCheckout(location, 5.99, "BUMBUM590", { page: "downsell_modal" });
+  trackInitiateCheckout(location, 9.90, "BUMBUM90", { page: "downsell_modal" });
 
   fbq("trackCustom", "DownsellCtaClick", {
     click_location: location,
     product: "BrazilianBooty - Desafío 28 Días Downsell",
-    value: 5.99,
-    currency: "EUR",
+    value: 9.90,
+    currency: "USD",
   });
 }
 
@@ -465,8 +468,8 @@ export function trackPlanPageView(details: Record<string, unknown> = {}) {
   trackPageView("Plano 28 Días - BrazilianBooty");
   trackViewContent("Quiz Plan Offer Screen", {
     page_type: "full_offer_plan",
-    price: 9.99,
-    currency: "EUR",
+    price: 9.90,
+    currency: "USD",
     ...details,
   });
 }

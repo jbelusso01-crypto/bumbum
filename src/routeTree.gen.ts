@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppCoachlucaRouteImport } from './routes/app-coachluca'
 import { Route as BackredirectRouteImport } from './routes/backredirect'
 import { Route as OfertaEspecialRouteImport } from './routes/oferta-especial'
+import { Route as PreviewRouteImport } from './routes/preview'
 import { Route as QuizRouteImport } from './routes/quiz'
 import { Route as UpsellRouteImport } from './routes/upsell'
 import { Route as VslRouteImport } from './routes/vsl'
@@ -37,6 +38,11 @@ const OfertaEspecialRoute = OfertaEspecialRouteImport.update({
   path: '/oferta-especial',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PreviewRoute = PreviewRouteImport.update({
+  id: '/preview',
+  path: '/preview',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const QuizRoute = QuizRouteImport.update({
   id: '/quiz',
   path: '/quiz',
@@ -58,6 +64,7 @@ export interface FileRoutesByFullPath {
   '/app-coachluca': typeof AppCoachlucaRoute
   '/backredirect': typeof BackredirectRoute
   '/oferta-especial': typeof OfertaEspecialRoute
+  '/preview': typeof PreviewRoute
   '/quiz': typeof QuizRoute
   '/upsell': typeof UpsellRoute
   '/vsl': typeof VslRoute
@@ -67,6 +74,7 @@ export interface FileRoutesByTo {
   '/app-coachluca': typeof AppCoachlucaRoute
   '/backredirect': typeof BackredirectRoute
   '/oferta-especial': typeof OfertaEspecialRoute
+  '/preview': typeof PreviewRoute
   '/quiz': typeof QuizRoute
   '/upsell': typeof UpsellRoute
   '/vsl': typeof VslRoute
@@ -77,6 +85,7 @@ export interface FileRoutesById {
   '/app-coachluca': typeof AppCoachlucaRoute
   '/backredirect': typeof BackredirectRoute
   '/oferta-especial': typeof OfertaEspecialRoute
+  '/preview': typeof PreviewRoute
   '/quiz': typeof QuizRoute
   '/upsell': typeof UpsellRoute
   '/vsl': typeof VslRoute
@@ -88,6 +97,7 @@ export interface FileRouteTypes {
     | '/app-coachluca'
     | '/backredirect'
     | '/oferta-especial'
+    | '/preview'
     | '/quiz'
     | '/upsell'
     | '/vsl'
@@ -97,6 +107,7 @@ export interface FileRouteTypes {
     | '/app-coachluca'
     | '/backredirect'
     | '/oferta-especial'
+    | '/preview'
     | '/quiz'
     | '/upsell'
     | '/vsl'
@@ -106,6 +117,7 @@ export interface FileRouteTypes {
     | '/app-coachluca'
     | '/backredirect'
     | '/oferta-especial'
+    | '/preview'
     | '/quiz'
     | '/upsell'
     | '/vsl'
@@ -116,6 +128,7 @@ export interface RootRouteChildren {
   AppCoachlucaRoute: typeof AppCoachlucaRoute
   BackredirectRoute: typeof BackredirectRoute
   OfertaEspecialRoute: typeof OfertaEspecialRoute
+  PreviewRoute: typeof PreviewRoute
   QuizRoute: typeof QuizRoute
   UpsellRoute: typeof UpsellRoute
   VslRoute: typeof VslRoute
@@ -151,6 +164,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OfertaEspecialRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/preview': {
+      id: '/preview'
+      path: '/preview'
+      fullPath: '/preview'
+      preLoaderRoute: typeof PreviewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/quiz': {
       id: '/quiz'
       path: '/quiz'
@@ -180,6 +200,7 @@ const rootRouteChildren: RootRouteChildren = {
   AppCoachlucaRoute: AppCoachlucaRoute,
   BackredirectRoute: BackredirectRoute,
   OfertaEspecialRoute: OfertaEspecialRoute,
+  PreviewRoute: PreviewRoute,
   QuizRoute: QuizRoute,
   UpsellRoute: UpsellRoute,
   VslRoute: VslRoute,

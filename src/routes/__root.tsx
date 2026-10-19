@@ -9,7 +9,7 @@ import {
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
-import { initMetaPixel, META_PIXEL_ID } from "../pixel";
+import { initMetaPixel, META_PIXEL_ID, PIXEL_BLOCKED_PREFIXES } from "../pixel";
 
 function NotFoundComponent() {
   return (
@@ -100,7 +100,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     scripts: META_PIXEL_ID
       ? [
           {
-            children: `if (typeof window !== 'undefined' && !window.location.pathname.toLowerCase().startsWith('/app-coachluca') && !window.location.pathname.toLowerCase().startsWith('/app')) { !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window, document,'script','https://connect.facebook.net/en_US/fbevents.js'); fbq('init', '${META_PIXEL_ID}'); fbq('track', 'PageView'); }`,
+            children: `if (typeof window !== 'undefined' && ${JSON.stringify(PIXEL_BLOCKED_PREFIXES)}.every(function (p) { return window.location.pathname.toLowerCase().indexOf(p) !== 0; })) { !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window, document,'script','https://connect.facebook.net/en_US/fbevents.js'); fbq('init', '${META_PIXEL_ID}'); fbq('track', 'PageView'); }`,
           },
         ]
       : [],
@@ -113,9 +113,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: Readonly<{ children: ReactNode }>) {
   useEffect(() => {
-    if (typeof window !== "undefined" && !window.location.pathname.toLowerCase().startsWith("/app-coachluca") && !window.location.pathname.toLowerCase().startsWith("/app")) {
-      initMetaPixel();
-    }
+    // initMetaPixel já ignora as rotas de PIXEL_BLOCKED_PREFIXES
+    initMetaPixel();
   }, []);
 
   return (

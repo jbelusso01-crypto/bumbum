@@ -120,7 +120,7 @@ export default function OfertaEspecialPage() {
     }
   };
 
-  // Downsell CTA click ($5.90 Offer)
+  // Downsell CTA click ($9.90 USD Offer)
   const handleDownsellCta = (location = "downsell_modal_cta") => {
     trackDownsellCtaClick(location);
     const checkoutUrl = getDecoratedCheckoutUrl(BASE_BACKREDIRECT_URL);
@@ -958,7 +958,7 @@ export default function OfertaEspecialPage() {
       </div>
 
       {/* ========================================================================= */}
-      {/* DOWNSELL MODAL: TRIGGERED WHEN USER TRIES TO LEAVE BACKREDIRECT ($5.90)   */}
+      {/* DOWNSELL MODAL: TRIGGERED WHEN USER TRIES TO LEAVE BACKREDIRECT ($9.90)   */}
       {/* ========================================================================= */}
       {showDownsellModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm animate-fade-in">
@@ -995,10 +995,7 @@ export default function OfertaEspecialPage() {
 
               <div className="mt-2 flex items-center justify-center gap-2">
                 <span className="text-xs sm:text-sm font-bold text-gray-400 line-through">
-                  Precio Normal: 97,00 €
-                </span>
-                <span className="text-xs sm:text-sm font-bold text-gray-400 line-through">
-                  Oferta 9,99 €
+                  Precio Normal: $97.00 USD
                 </span>
               </div>
 
@@ -1007,8 +1004,9 @@ export default function OfertaEspecialPage() {
                   Llévalo hoy por solo:
                 </span>
                 <span className="font-display text-4xl sm:text-5xl font-black text-red-600">
-                  5,99 €
+                  $9.90
                 </span>
+                <span className="text-sm font-bold text-red-600">USD</span>
               </div>
 
               <div className="mt-3 space-y-1.5 text-left text-xs font-bold text-[color:var(--wine)]">
@@ -1036,7 +1034,7 @@ export default function OfertaEspecialPage() {
               >
                 <span className="button-sheen" />
                 <span className="flex items-center justify-center gap-2">
-                  ¡SÍ, QUIERO MI PLAN POR SOLO 5,99 €!
+                  ¡SÍ, QUIERO MI PLAN POR SOLO $9.90!
                   <ArrowRight size={22} />
                 </span>
               </button>
@@ -1082,11 +1080,11 @@ export default function OfertaEspecialPage() {
                     OFERTA DE RESCATE ACTIVA
                   </span>
                   <span className="rounded bg-[color:var(--wine)] px-1.5 py-0.2 text-[10px] font-black text-[color:var(--lime)]">
-                    5,99 €
+                    $9.90 USD
                   </span>
                 </div>
                 <p className="text-[11px] font-medium text-[color:var(--ink-muted)]">
-                  Acceso completo al método de 28 días con 95% de descuento
+                  Acceso completo al método de 28 días con 90% de descuento
                 </p>
               </div>
             </div>
@@ -1099,7 +1097,7 @@ export default function OfertaEspecialPage() {
               >
                 <span className="button-sheen" />
                 <span className="flex items-center justify-center gap-1.5">
-                  ¡ACCEDER POR 5,99 €!
+                  ¡ACCEDER POR $9.90!
                   <ArrowRight size={16} />
                 </span>
               </button>
